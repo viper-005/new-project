@@ -579,8 +579,7 @@ function initApp() {
   document.getElementById('userRoleDisplay').textContent = capitalize(currentUser.role);
 
   buildSidebar();
-  if (!useMock) showToast('Connected to live API ✓');
-  else          showToast('Running in offline demo mode');
+  showToast('Connected to live API ✓');
 }
 
 const NAV = {
