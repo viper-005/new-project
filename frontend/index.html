@@ -230,9 +230,21 @@ textarea { resize: vertical; min-height: 90px; }
       <input type="password" id="loginPass" placeholder="Enter password">
     </div>
 
-    <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:.5rem" onclick="doLogin()">
-      Sign In →
-    </button>
+<button class="btn btn-primary"
+style="width:100%;justify-content:center;margin-top:.5rem"
+onclick="doLogin()">
+
+  Sign In →
+
+</button>
+
+<button class="btn"
+style="width:100%;justify-content:center;margin-top:.75rem"
+onclick="goToRegister()">
+
+  Create Account
+
+</button>
 
     <div style="margin-top:1.25rem;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:.875rem;font-size:12px;color:var(--muted)">
       <b>Demo credentials</b><br>
@@ -892,6 +904,11 @@ if (uz) {
   uz.addEventListener('dragover', e=>{ e.preventDefault(); uz.classList.add('dragover'); });
   uz.addEventListener('dragleave', ()=>uz.classList.remove('dragover'));
   uz.addEventListener('drop', e=>{ e.preventDefault(); uz.classList.remove('dragover'); const dt=e.dataTransfer; if(dt.files.length){ handlePhotos({files:dt.files}); } });
+}
+function goToRegister(){
+
+    window.location.href = "register.html";
+
 }
 </script>
 </body>

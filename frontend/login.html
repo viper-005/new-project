@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+  --bg:#f7f6f3;
+  --surface:#ffffff;
+  --border:#e5e3dc;
+  --text:#1a1917;
+  --muted:#72706a;
+  --accent:#2b5be0;
+  --radius:10px;
+  --radius-lg:14px;
+  --shadow:0 1px 3px rgba(0,0,0,.07),
+           0 4px 16px rgba(0,0,0,.04);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:2rem;
+}
+
+.login-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:2.5rem;
+  width:100%;
+  max-width:480px;
+  box-shadow:var(--shadow);
+}
+
+.login-logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:1.8rem;
+}
+
+.login-logo-icon{
+  width:40px;
+  height:40px;
+  background:var(--accent);
+  border-radius:10px;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:600;
+}
+
+.login-logo-name{
+  font-size:20px;
+  font-weight:600;
+}
+
+.login-logo-sub{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.field{
+  margin-bottom:1rem;
+}
+
+.field label{
+  display:block;
+  margin-bottom:6px;
+  font-size:12px;
+  color:var(--muted);
+  text-transform:uppercase;
+  font-weight:500;
+}
+
+input{
+  width:100%;
+  padding:11px 14px;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  font-size:14px;
+  outline:none;
+}
+
+input:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(43,91,224,.12);
+}
+
+.btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:var(--radius);
+  background:var(--accent);
+  color:white;
+  font-size:14px;
+  font-weight:500;
+  cursor:pointer;
+  margin-top:1rem;
+}
+
+.btn:hover{
+  background:#1f4ed8;
+}
+
+.error{
+  color:red;
+  font-size:12px;
+}
+
+.show-pass{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:8px;
+  font-size:13px;
+  color:var(--muted);
+}
+
+.show-pass input{
+  width:auto;
+}
+
+.bottom-links{
+  margin-top:1rem;
+  text-align:center;
+  font-size:14px;
+}
+
+.bottom-links a{
+  color:var(--accent);
+  text-decoration:none;
+}
+
+.forgot{
+  text-align:right;
+  margin-top:8px;
+}
+
+.forgot a{
+  font-size:13px;
+  color:var(--accent);
+  text-decoration:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="login-card">
+
+  <div class="login-logo">
+
+      <div class="login-logo-icon">
+          H
+      </div>
+
+      <div>
+          <div class="login-logo-name">
+              Hostel CMS
+          </div>
+
+          <div class="login-logo-sub">
+              Student Login
+          </div>
+      </div>
+
+  </div>
+
+<form id="loginForm">
+
+  <div class="field">
+
+      <label>Email Address</label>
+
+      <input type="email"
+             id="loginEmail"
+             placeholder="Enter your email">
+
+      <span class="error"
+            id="emailError"></span>
+
+  </div>
+
+  <div class="field">
+
+      <label>Password</label>
+
+      <input type="password"
+             id="loginPassword"
+             placeholder="Enter your password">
+
+      <span class="error"
+            id="passwordError"></span>
+
+      <div class="show-pass">
+
+          <input type="checkbox"
+                 onclick="togglePassword()">
+
+          <span>Show Password</span>
+
+      </div>
+
+      <div class="forgot">
+          <a href="forgot.html">
+              Forgot Password?
+          </a>
+      </div>
+
+  </div>
+
+  <button type="submit"
+          class="btn">
+      Sign In
+  </button>
+
+</form>
+
+<div class="bottom-links">
+
+    Don't have an account?
+
+    <a href="register.html">
+        Register
+    </a>
+
+</div>
+
+</div>
+
+<script>
+
+function togglePassword(){
+
+    let password =
+    document.getElementById("loginPassword");
+
+    if(password.type === "password"){
+        password.type = "text";
+    }
+    else{
+        password.type = "password";
+    }
+}
+
+document.getElementById("loginForm")
+.addEventListener("submit", function(event){
+
+    event.preventDefault();
+
+    let email =
+    document.getElementById("loginEmail")
+    .value.trim();
+
+    let password =
+    document.getElementById("loginPassword")
+    .value.trim();
+
+    let savedEmail =
+    localStorage.getItem("userEmail");
+
+    let savedPassword =
+    localStorage.getItem("userPassword");
+
+    let valid = true;
+
+    if(email === ""){
+
+        document.getElementById("emailError")
+        .innerText = "Email is required";
+
+        valid = false;
+
+    } else {
+
+        document.getElementById("emailError")
+        .innerText = "";
+    }
+
+    if(password === ""){
+
+        document.getElementById("passwordError")
+        .innerText = "Password is required";
+
+        valid = false;
+
+    } else {
+
+        document.getElementById("passwordError")
+        .innerText = "";
+    }
+
+    if(valid){
+
+        if(email === savedEmail &&
+           password === savedPassword){
+
+            alert("Login Successful");
+
+            window.location.href = "index.html";
+
+        }
+        else{
+
+            alert("Invalid Email or Password");
+        }
+    }
+
+});
+
+</script>
+
+</body>
+</html>
