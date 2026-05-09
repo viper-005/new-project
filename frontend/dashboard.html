@@ -223,7 +223,7 @@ textarea { resize: vertical; min-height: 90px; }
 
     <div class="field">
       <label>Email Address</label>
-      <input type="email" id="loginEmail" placeholder="e.g. aarav@hostel.edu">
+      <input type="email" id="loginEmail" placeholder="e.g. aarav@gmail.com">
     </div>
     <div class="field">
       <label>Password</label>
@@ -265,15 +265,15 @@ onclick="goToRegister()">
 
     <div style="margin-top:1.25rem;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:.875rem;font-size:12px;color:var(--muted)">
       <b>Demo credentials</b><br>
-      Student: aarav@hostel.edu / student123<br>
-      Warden: warden@hostel.edu / warden123<br>
-      Maintenance: maintenance@hostel.edu / maint123
+      Student: aarav@gmail.com / student123<br>
+      Warden: warden@gmail.com/ warden123<br>
+      Maintenance: maintenance@gmail.com / maint123
     </div>
   </div>
 </div>
 
 <!-- ═══════════════════ MAIN APP ═══════════════════ -->
-<div id="mainApp">
+<div id="mainApp" style="display:none;">
   <div class="topbar">
     <div class="topbar-brand">
       <div class="topbar-icon">H</div>
@@ -444,6 +444,50 @@ onclick="goToRegister()">
 <div id="toast"></div>
 
 <script>
+
+let selectedRole = "student";
+
+function selRole(role, element){
+
+    selectedRole = role;
+
+    document.querySelectorAll(".role-btn")
+    .forEach(btn => {
+        btn.classList.remove("sel");
+    });
+
+    element.classList.add("sel");
+
+    // autofill demo credentials
+
+    if(role === "student"){
+
+        document.getElementById("loginEmail").value =
+        "aarav@gmail.com";
+
+        document.getElementById("loginPass").value =
+        "student123";
+    }
+
+    else if(role === "warden"){
+
+        document.getElementById("loginEmail").value =
+        "warden@gmail.com";
+
+        document.getElementById("loginPass").value =
+        "warden123";
+    }
+
+    else if(role === "maintenance"){
+
+        document.getElementById("loginEmail").value =
+        "maintenance@gmail.com";
+
+        document.getElementById("loginPass").value =
+        "maint123";
+    }
+
+}
 // ── Config ──────────────────────────────────────────────────────────────────
 const API = 'https://hostel-backend-1ns8.onrender.com/';
 let token = '', currentUser = null, selectedPhotos = [], currentComplaintId = '';
@@ -451,11 +495,11 @@ let token = '', currentUser = null, selectedPhotos = [], currentComplaintId = ''
 // ── Mock DB (used when API is unreachable) ────────────────────────────────
 let mockDB = {
   users: {
-    'aarav@hostel.edu':        { id:'stu001', name:'Aarav Shah',       role:'student',      room:'A-204', password:'student123', email:'aarav@hostel.edu' },
-    'warden@hostel.edu':       { id:'war001', name:'Dr. Meera Nair',   role:'warden',       room:null,    password:'warden123',  email:'warden@hostel.edu' },
-    'maintenance@hostel.edu':  { id:'mnt001', name:'Raju Verma',       role:'maintenance',  room:null,    password:'maint123',   email:'maintenance@hostel.edu' },
+    'aarav@gmail.com':        { id:'stu001', name:'Aarav Shah',       role:'student',      room:'A-204', password:'student123', email:'aarav@gmail.com' },
+    'warden@gmail.com':       { id:'war001', name:'Dr. Meera Nair',   role:'warden',       room:null,    password:'warden123',  email:'warden@gmail.com' },
+    'maintenance@gmail.com':  { id:'mnt001', name:'Raju Verma',       role:'maintenance',  room:null,    password:'maint123',   email:'maintenance@gmail.com' },
   },
-  maintenance: [{ id:'mnt001', name:'Raju Verma', email:'maintenance@hostel.edu' }],
+  maintenance: [{ id:'mnt001', name:'Raju Verma', email:'maintenance@gmail.com' }],
   complaints: [
     { id:'C001', student_id:'stu001', student_name:'Aarav Shah', room:'A-204', category:'Plumbing',   subject:'Leaking tap in bathroom',    description:'The tap has been leaking since 3 days, water is getting wasted.',   priority:'High',   status:'Assigned',    assigned_to:'mnt001', photos:[],   warden_note:'Fix ASAP',  comments:[], created_at:'2026-05-01T10:00:00', updated_at:'2026-05-01T12:00:00' },
     { id:'C002', student_id:'stu001', student_name:'Aarav Shah', room:'A-204', category:'Electrical', subject:'Ceiling fan not working',     description:'The ceiling fan stopped working suddenly last night.',             priority:'Medium', status:'In Progress', assigned_to:'mnt001', photos:[],   warden_note:'',          comments:[{id:'x1',author:'Raju Verma',role:'maintenance',text:'Inspected — replacement part ordered',created_at:'2026-05-02T09:00:00'}], created_at:'2026-05-02T08:00:00', updated_at:'2026-05-02T09:00:00' },
@@ -552,15 +596,7 @@ function mockStats() {
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
 let selectedRoleSel = null;
-function selRole(r, el) {
-  document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('sel'));
-  el.classList.add('sel');
-  selectedRoleSel = r;
-  const map = { student:'aarav@hostel.edu', warden:'warden@hostel.edu', maintenance:'maintenance@hostel.edu' };
-  const pmap= { student:'student123', warden:'warden123', maintenance:'maint123' };
-  document.getElementById('loginEmail').value = map[r];
-  document.getElementById('loginPass').value  = pmap[r];
-}
+
 function togglePassword(){
 
     let password =
@@ -576,68 +612,85 @@ function togglePassword(){
     }
 }  
 
-function doLogin() {
+function doLogin(){
 
-    const email =
+    let email =
     document.getElementById("loginEmail")
     .value.trim();
 
-    const pass =
+    let pass =
     document.getElementById("loginPass")
     .value.trim();
+
     let emailPattern =
-/^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-if(!emailPattern.test(email)){
+    /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
-    showToast("Please enter a valid Gmail address");
+    if(!emailPattern.test(email)){
 
-    return;
-}
+        showToast("Please enter a valid Gmail address");
 
-    if(!email || !pass){
-
-        showToast("Enter email and password");
         return;
     }
 
-    let users =
+    let demoUsers = [
+
+        {
+            name: "Student Demo",
+            email: "aarav@gmail.com",
+            password: "student123",
+            role: "student"
+        },
+
+        {
+            name: "Warden Demo",
+            email: "warden@gmail.com",
+            password: "warden123",
+            role: "warden"
+        },
+
+        {
+            name: "Maintenance Demo",
+            email: "maintenance@gmail.com",
+            password: "maint123",
+            role: "maintenance"
+        }
+
+    ];
+
+    let registeredUsers =
     JSON.parse(localStorage.getItem("users")) || [];
+
+    let users = [
+        ...demoUsers,
+        ...registeredUsers
+    ];
 
     let foundUser =
     users.find(user =>
         user.email === email &&
-        user.password === pass
+        user.password === pass &&
+        user.role === selectedRole
     );
 
     if(foundUser){
 
-    showToast("Login Successful");
+        showToast("Login Successful");
 
-    currentUser = {
-        name: foundUser.name,
-        email: foundUser.email,
-        role: foundUser.role
-    };
+        currentUser = foundUser;
 
-    localStorage.setItem(
-        "currentUser",
-        JSON.stringify(currentUser)
-    );
+        localStorage.setItem(
+            "currentUser",
+            JSON.stringify(currentUser)
+        );
 
-    document.getElementById("loginScreen")
-    .style.display = "none";
+        initApp();
+    }
 
-    document.getElementById("mainApp")
-    .style.display = "block";
+    else{
 
-    initApp();
-
+        showToast("Invalid credentials");
+    }
 }
-else{
-
-    showToast("Invalid credentials");
-}
-
 function logout() {
   token=''; currentUser=null; selectedPhotos=[];
   document.getElementById('loginScreen').style.display='flex';
