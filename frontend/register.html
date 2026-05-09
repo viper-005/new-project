@@ -198,6 +198,27 @@ input:focus{
       <span class="error"
             id="emailError"></span>
   </div>
+<div class="field">
+
+    <label>Select Role</label>
+
+    <select id="role">
+
+        <option value="student">
+            Student
+        </option>
+
+        <option value="warden">
+            Warden
+        </option>
+
+        <option value="maintenance">
+            Maintenance Worker
+        </option>
+
+    </select>
+
+</div>
 
   <div class="field">
       <label>Password</label>
@@ -210,8 +231,8 @@ input:focus{
             id="passwordError"></span>
 
       <div class="show-pass">
-          <input type="checkbox"
-                 onclick="togglePassword()">
+         <input type="checkbox"
+       onclick="togglePassword()">
 
           <span>Show Password</span>
       </div>
@@ -239,9 +260,11 @@ function togglePassword(){
     document.getElementById("password");
 
     if(password.type === "password"){
+
         password.type = "text";
-    }
-    else{
+
+    } else {
+
         password.type = "password";
     }
 }
@@ -250,6 +273,9 @@ document.getElementById("registerForm")
 .addEventListener("submit", function(event){
 
     event.preventDefault();
+
+    let emailPattern =
+    /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
     let name =
     document.getElementById("name").value.trim();
@@ -260,47 +286,81 @@ document.getElementById("registerForm")
     let password =
     document.getElementById("password").value.trim();
 
+    let role =
+    document.getElementById("role").value;
+
     let valid = true;
 
     if(name === ""){
+
         document.getElementById("nameError")
         .innerText = "Name is required";
+
         valid = false;
-    }
-    else{
+
+    } else {
+
         document.getElementById("nameError")
         .innerText = "";
     }
 
     if(email === ""){
+
         document.getElementById("emailError")
         .innerText = "Email is required";
+
         valid = false;
+
+    }
+    else if(!emailPattern.test(email)){
+
+        document.getElementById("emailError")
+        .innerText =
+        "Please enter a valid Gmail address";
+
+        valid = false;
+
     }
     else{
+
         document.getElementById("emailError")
         .innerText = "";
     }
 
     if(password.length < 6){
+
         document.getElementById("passwordError")
         .innerText =
         "Password must be at least 6 characters";
+
         valid = false;
-    }
-    else{
+
+    } else {
+
         document.getElementById("passwordError")
         .innerText = "";
     }
 
     if(valid){
 
-        localStorage.setItem("userEmail", email);
-        localStorage.setItem("userPassword", password);
+        let users =
+        JSON.parse(localStorage.getItem("users")) || [];
+
+        users.push({
+            name: name,
+            email: email,
+            password: password,
+            role: role
+        });
+
+        localStorage.setItem(
+            "users",
+            JSON.stringify(users)
+        );
 
         alert("Registration Successful");
 
-        window.location.href = "login.html";
+        window.location.href = "dashboard.html";
     }
 
 });
