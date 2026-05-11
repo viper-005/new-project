@@ -602,15 +602,18 @@ function togglePassword(){
     let password =
     document.getElementById("loginPass");
 
+    if(!password) return;
+
     if(password.type === "password"){
 
         password.type = "text";
 
-    } else {
+    } 
+    else{
 
         password.type = "password";
     }
-}  
+}
 
 function doLogin(){
 
@@ -635,24 +638,27 @@ function doLogin(){
     let demoUsers = [
 
         {
-            name: "Student Demo",
-            email: "aarav@gmail.com",
-            password: "student123",
-            role: "student"
-        },
+    id: "stu001",
+    name: "Student Demo",
+    email: "aarav@gmail.com",
+    password: "student123",
+    role: "student"
+},
+
+{
+    id: "war001",
+    name: "Warden Demo",
+    email: "warden@gmail.com",
+    password: "warden123",
+    role: "warden"
+},
 
         {
-            name: "Warden Demo",
-            email: "warden@gmail.com",
-            password: "warden123",
-            role: "warden"
-        },
-
-        {
-            name: "Maintenance Demo",
-            email: "maintenance@gmail.com",
-            password: "maint123",
-            role: "maintenance"
+              id: "mnt001",
+    name: "Maintenance Demo",
+    email: "maintenance@gmail.com",
+    password: "maint123",
+    role: "maintenance"
         }
 
     ];

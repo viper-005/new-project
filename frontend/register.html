@@ -274,9 +274,6 @@ document.getElementById("registerForm")
 
     event.preventDefault();
 
-    let emailPattern =
-    /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-
     let name =
     document.getElementById("name").value.trim();
 
@@ -289,82 +286,46 @@ document.getElementById("registerForm")
     let role =
     document.getElementById("role").value;
 
-    let valid = true;
+    let users =
+    JSON.parse(localStorage.getItem("users")) || [];
 
-    if(name === ""){
+    let alreadyExists =
+    users.find(user => user.email === email);
 
-        document.getElementById("nameError")
-        .innerText = "Name is required";
+    if(alreadyExists){
 
-        valid = false;
-
-    } else {
-
-        document.getElementById("nameError")
-        .innerText = "";
+        alert("User already exists");
+        return;
     }
 
-    if(email === ""){
+    let newUser = {
 
-        document.getElementById("emailError")
-        .innerText = "Email is required";
+        id: Date.now().toString(),
 
-        valid = false;
+        name: name,
 
-    }
-    else if(!emailPattern.test(email)){
+        email: email,
 
-        document.getElementById("emailError")
-        .innerText =
-        "Please enter a valid Gmail address";
+        password: password,
 
-        valid = false;
+        role: role
+    };
 
-    }
-    else{
+    users.push(newUser);
 
-        document.getElementById("emailError")
-        .innerText = "";
-    }
+    localStorage.setItem(
+        "users",
+        JSON.stringify(users)
+    );
+    localStorage.setItem(
+    "currentUser",
+    JSON.stringify(newUser)
+);
 
-    if(password.length < 6){
+    alert("Registration Successful");
 
-        document.getElementById("passwordError")
-        .innerText =
-        "Password must be at least 6 characters";
-
-        valid = false;
-
-    } else {
-
-        document.getElementById("passwordError")
-        .innerText = "";
-    }
-
-    if(valid){
-
-        let users =
-        JSON.parse(localStorage.getItem("users")) || [];
-
-        users.push({
-            name: name,
-            email: email,
-            password: password,
-            role: role
-        });
-
-        localStorage.setItem(
-            "users",
-            JSON.stringify(users)
-        );
-
-        alert("Registration Successful");
-
-        window.location.href = "dashboard.html";
-    }
-
+    window.location.href = "dashboard.html";
 });
-
 </script>
 
 </body>
