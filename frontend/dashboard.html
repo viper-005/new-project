@@ -6,6 +6,29 @@
 <title>Hostel CMS</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  .watermark{
+
+    position: fixed;
+
+    top: 50%;
+
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    opacity: 0.03;
+
+    z-index: 0;
+
+    pointer-events: none;
+}
+
+.watermark img{
+
+    width: 350px;
+
+    max-width: 80vw;
+}
 :root {
   --bg:        #f7f6f3;
   --surface:   #ffffff;
@@ -197,6 +220,11 @@ textarea { resize: vertical; min-height: 90px; }
 </style>
 </head>
 <body>
+  <div class="watermark">
+
+    <img src="logo.png" alt="logo">
+
+</div>
 
 <!-- ═══════════════════ LOGIN ═══════════════════ -->
 <div id="loginScreen">
