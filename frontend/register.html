@@ -200,23 +200,8 @@ input:focus{
   </div>
 <div class="field">
 
-    <label>Select Role</label>
+  <input type="hidden" id="role" value="student">
 
-    <select id="role">
-
-        <option value="student">
-            Student
-        </option>
-
-        <option value="warden">
-            Warden
-        </option>
-
-        <option value="maintenance">
-            Maintenance Worker
-        </option>
-
-    </select>
 
 </div>
 
@@ -284,7 +269,7 @@ document.getElementById("registerForm")
     document.getElementById("password").value.trim();
 
     let role =
-    document.getElementById("role").value;
+    let role = "student";
 
     let users =
     JSON.parse(localStorage.getItem("users")) || [];
